@@ -58,7 +58,6 @@ This project investigates what drives private, entire-house listing prices in Se
 | `north_seattle` / `sw_other` | Neighborhood group dummies (baseline = Downtown Seattle) |
 | Amenity dummies | 18 binary features: kitchen, stove, WiFi, hot tub, washer, workspace, etc. |
 | `unavail_30` | Days booked in the next 30 days  |
-| `estimated_occupancy_l365d` | Estimated occupancy last year (demand proxy) |
 | `entire_place` | Binary flag for entire home/apt listings |
 
 ### Modeling
