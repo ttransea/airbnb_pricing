@@ -1,34 +1,30 @@
-# 🏠 Seattle Airbnb Price Prediction
+#  Seattle Airbnb Pricing Analysis
 
-A machine learning project that models nightly listing prices for entire-home Airbnb rentals in Seattle, WA. The analysis covers end-to-end data preprocessing, exploratory analysis, multi-model comparison, and SHAP-based interpretability.
+## Target Audience
+New Airbnb host - may use this model as a reference to determine the optimal price range for a new listing.
 
----
-
-## 📋 Table of Contents
+## Table of Contents
 
 - [Overview](#overview)
 - [Dataset](#dataset)
-- [Project Structure](#project-structure)
 - [Methodology](#methodology)
   - [Preprocessing](#preprocessing)
   - [Feature Engineering](#feature-engineering)
   - [Modeling](#modeling)
 - [Results](#results)
 - [Interpretability](#interpretability)
-- [Requirements](#requirements)
-- [Usage](#usage)
+
 
 ---
 
 ## Overview
-
-This project investigates what drives Airbnb nightly prices in Seattle using a dataset of active short-term rental listings. Four regression models are trained and compared — OLS, Random Forest, XGBoost, and SVR — with performance evaluated on both log-scale and original-price metrics. SHAP values are used to interpret feature importance across models.
+This project investigates what drives private, entire-house listing prices in Seattle using a dataset of active short-term rental listings. Four regression models are trained and compared ( OLS, Random Forest, XGBoost, and SVR ) with performance evaluated on both log-scale and original-price metrics. SHAP values are used to interpret feature importance across models.
 
 ---
 
 ## Dataset
 
-- **Source:** `listings_2.csv` — scraped from Airbnb in August 2025
+- **Source:** [InsideAirbnb.com](https://insideairbnb.com/seattle/) — scraped from Airbnb in August 2025
 - **Scope:** Seattle, WA short-term/vacation rentals
 - **Target variable:** `price` (nightly rate in USD)
 
@@ -40,26 +36,16 @@ This project investigates what drives Airbnb nightly prices in Seattle using a d
 
 ---
 
-## Project Structure
-
-```
-airbnb_final.ipynb   # Main analysis notebook
-listings_2.csv       # Raw data (not included)
-README.md
-```
-
----
-
 ## Methodology
 
 ### Preprocessing
 
 - **Duplicate removal** via `drop_duplicates()`
 - **Missing value imputation:**
-  - Numeric columns (`bathrooms`, `bedrooms`, `beds`, `host_lifetime`, `price`) → **k-NN Imputer** (k=5)
-  - `host_response_rate` → mode imputation
-  - `host_acceptance_rate` → median imputation
-  - `host_response_speed` → ordinal encoding + k-NN imputation
+  - Numeric columns (`bathrooms`, `bedrooms`, `beds`, `host_lifetime`, `price`) : **k-NN Imputer** (k=5)
+  - `host_response_rate` : mode imputation
+  - `host_acceptance_rate` : median imputation
+  - `host_response_speed` : ordinal encoding + k-NN imputation
 - **Binary encoding** for boolean fields: `host_is_superhost`, `host_has_profile_pic`, `host_identity_verified`, `instant_bookable`, `has_availability`
 
 ### Feature Engineering
@@ -71,7 +57,8 @@ README.md
 | `recent_reviewed` | Binary: listing reviewed in 2025 |
 | `north_seattle` / `sw_other` | Neighborhood group dummies (baseline = Downtown Seattle) |
 | Amenity dummies | 18 binary features: kitchen, stove, WiFi, hot tub, washer, workspace, etc. |
-| `unavail_30` | Days booked in the next 30 days (demand proxy) |
+| `unavail_30` | Days booked in the next 30 days  |
+| `estimated_occupancy_l365d` | Estimated occupancy last year (demand proxy) |
 | `entire_place` | Binary flag for entire home/apt listings |
 
 ### Modeling
@@ -102,8 +89,8 @@ Models are evaluated on both **log scale** and **original price scale** using R�
 
 SHAP (SHapley Additive exPlanations) values are computed for both the OLS and SVR models to explain global feature importance and individual predictions:
 
-- **Bar plots** — mean absolute SHAP values per feature
-- **Beeswarm plots** (OLS) — direction and magnitude of each feature's effect on price
+- **Bar plots** (OLS and SVR) : mean absolute SHAP values per feature
+- **Beeswarm plots** (OLS) : direction and magnitude of each feature's effect on price
 
 ```python
 explainer = shap.Explainer(model_predict, X_train)
@@ -113,7 +100,7 @@ shap.summary_plot(shap_values, X_test)
 
 ---
 
-## Requirements
+## Required libraries
 
 ```
 pandas
@@ -126,20 +113,5 @@ matplotlib
 seaborn
 ```
 
-Install all dependencies:
-
-```bash
-pip install pandas numpy scikit-learn statsmodels xgboost shap matplotlib seaborn
-```
-
 ---
 
-## Usage
-
-1. Place `listings_2.csv` in the project root directory.
-2. Open and run `airbnb_final.ipynb` top to bottom.
-3. All preprocessing, EDA, modeling, and SHAP analysis will execute in sequence.
-
-```bash
-jupyter notebook airbnb_final.ipynb
-```
