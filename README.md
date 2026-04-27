@@ -32,7 +32,7 @@ This project investigates what drives private, entire-house listing prices in Se
 - Listings with `maximum_nights > 365` removed (extended stays excluded)
 - Listings with `minimum_nights > 14` removed
 - Top 1% price outliers removed
-- Analysis restricted to **entire home/apartment** listings only
+- Analysis restricted to entire home/apartment listings only
 
 ---
 
@@ -42,7 +42,7 @@ This project investigates what drives private, entire-house listing prices in Se
 
 - **Duplicate removal** via `drop_duplicates()`
 - **Missing value imputation:**
-  - Numeric columns (`bathrooms`, `bedrooms`, `beds`, `host_lifetime`, `price`) : **k-NN Imputer** (k=5)
+  - Numeric columns (`bathrooms`, `bedrooms`, `beds`, `host_lifetime`, `price`) : k-NN Imputer (k=5)
   - `host_response_rate` : mode imputation
   - `host_acceptance_rate` : median imputation
   - `host_response_speed` : ordinal encoding + k-NN imputation
@@ -62,7 +62,7 @@ This project investigates what drives private, entire-house listing prices in Se
 
 ### Modeling
 
-All models use a **log1p-transformed target** (`np.log1p(price)`) to address right-skewed price distributions. A 70/30 train/test split is used (`random_state=108`).
+All models use a log1p-transformed target (`np.log1p(price)`) to address right-skewed price distributions. A 70/30 train/test split is used (`random_state=108`).
 
 | Model | Key Hyperparameters |
 |---|---|
@@ -78,7 +78,7 @@ All models use a **log1p-transformed target** (`np.log1p(price)`) to address rig
 
 ## Results
 
-Models are evaluated on both **log scale** and **original price scale** using R², RMSE, MAE, and MAPE.
+Models are evaluated on both log scale and original price scale using R², RMSE, MAE, and MAPE.
 
 > See the notebook for full metric tables and residual/actual-vs-predicted plots for each model.
 
